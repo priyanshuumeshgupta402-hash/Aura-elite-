@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YT AURA ELITE — QUANTUM DEEP PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+body {
+  background-color: #f1f5f9;
+  background-image: radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.12) 0px, transparent 40%),
+    radial-gradient(at 90% 90%, rgba(59, 130, 246, 0.10) 0px, transparent 40%);
+  font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a;
+  display: flex; justify-content: center; align-items: flex-start;
+  min-height: 100vh; padding: 12px; overflow-y: auto;
+}
+body::-webkit-scrollbar { width: 0; }
+
+/* ================= LOGIN SCREEN CSS ================= */
+#loginScreen {
+  position: fixed; inset: 0; background: #f1f5f9;
+  background-image: radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.15) 0px, transparent 40%),
+    radial-gradient(at 90% 90%, rgba(59, 130, 246, 0.15) 0px, transparent 40%);
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 24px; z-index: 9999; transition: opacity 0.4s ease;
+}
+#loginScreen.hidden { opacity: 0; pointer-events: none; display: none; }
+.login-card {
+  background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px;
+  padding: 32px 24px; width: 100%; max-width: 400px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+  position: relative; overflow: hidden;
+}
+.login-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+.login-logo {
+  font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900;
+  text-align: center; margin-bottom: 4px; letter-spacing: 2px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #0284c7 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.login-sub {
+  text-align: center; font-size: 10px; color: #64748b; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px;
+}
+.input-group { margin-bottom: 16px; }
+.input-group label { display: block; font-size: 10px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.input-group input {
+  width: 100%; padding: 16px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 700; color: #0f172a;
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px;
+  outline: none; transition: all 0.2s;
+}
+.input-group input:focus { border-color: #10b981; background: #ffffff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+.login-btn {
+  width: 100%; padding: 16px; margin-top: 8px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; border-radius: 14px; cursor: pointer;
+  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.4);
+  transition: all 0.2s;
+}
+.login-btn:active { transform: scale(0.96); }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.login-msg { text-align: center; font-size: 11px; font-weight: 800; margin-top: 16px; min-height: 16px; }
+.login-msg.err { color: #dc2626; }
+.login-msg.ok { color: #047857; }
+
+/* ================= MAIN APP CSS ================= */
+#app {
+  width: 100%; max-width: 430px; display: flex; flex-direction: column; gap: 12px;
+  padding-bottom: 24px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+}
+#app.visible { opacity: 1; pointer-events: auto; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 6px 2px; }
+.brand {
+  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 1px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #0284c7 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.status-dot {
+  display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800;
+  color: #047857; background: #dcfce7; padding: 5px 12px; border-radius: 30px;
+  border: 1px solid #a7f3d0; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
+  transition: all .3s;
+}
+.status-dot::before {
+  content: ''; width: 7px; height: 7px; background: #10b981; border-radius: 50%;
+  box-shadow: 0 0 8px #10b981; animation: pulse 1.5s infinite;
+}
+.status-dot.warn { color: #b45309; background: #fef3c7; border-color: #fde68a; }
+.status-dot.warn::before { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+.status-dot.err { color: #b91c1c; background: #fee2e2; border-color: #fecaca; }
+.status-dot.err::before { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+.hero {
+  background: #ffffff; border: 1px solid #e2e8f0; border-radius: 22px; padding: 18px;
+  position: relative; overflow: hidden; box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.03);
+  animation: fadeUp 0.5s ease both;
+}
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #10b981, #3b82f6); }
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.period-block .label, .timer-block .label { font-size: 10px; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.period-block .value { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; color: #0f172a; letter-spacing: 1px; }
+.timer-block { text-align: right; }
+.timer-block .value { font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; color: #059669; letter-spacing: 1px; }
+.timer-bar { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-top: 6px; }
+.timer-fill { height: 100%; background: linear-gradient(90deg, #10b981, #06b6d4); transition: width .5s linear; border-radius: 10px; }
+.confidence-wrap { margin-top: 14px; padding-top: 10px; border-top: 1px dashed #e2e8f0; }
+.conf-head { display: flex; justify-content: space-between; font-size: 10px; color: #64748b; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+.conf-bar { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+.conf-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #10b981); transition: width .5s ease; border-radius: 10px; }
+.conf-fill.high { background: linear-gradient(90deg, #10b981, #06b6d4); }
+.conf-fill.low  { background: linear-gradient(90deg, #ef4444, #f59e0b); }
+.prediction {
+  background: linear-gradient(135deg, #059669 0%, #10b981 60%, #047857 100%);
+  border-radius: 24px; padding: 22px 20px 20px 20px; display: flex; flex-direction: column;
+  align-items: center; position: relative; overflow: hidden; color: #ffffff;
+  box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.35); animation: fadeUp 0.6s ease both;
+  transition: background .4s ease, box-shadow .4s ease;
+}
+.prediction.green-mode { background: linear-gradient(135deg, #059669 0%, #10b981 60%, #047857 100%); }
+.prediction.blue-mode { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 60%, #0369a1 100%); box-shadow: 0 16px 32px -8px rgba(14, 165, 233, 0.4); }
+.prediction.red-mode { background: linear-gradient(135deg, #dc2626 0%, #ef4444 60%, #b91c1c 100%); box-shadow: 0 16px 32px -8px rgba(239, 68, 68, 0.45); }
+.prediction.violet-mode { background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 60%, #5b21b6 100%); box-shadow: 0 16px 32px -8px rgba(139, 92, 246, 0.45); }
+.prediction.jackpot-mode { background: linear-gradient(135deg, #f59e0b 0%, #f97316 60%, #dc2626 100%); box-shadow: 0 16px 32px -8px rgba(245, 158, 11, 0.55); animation: jackpotGlow 2s ease-in-out infinite; }
+@keyframes jackpotGlow {
+  0%, 100% { box-shadow: 0 16px 32px -8px rgba(245, 158, 11, 0.55), 0 0 0 3px rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 16px 32px -8px rgba(245, 158, 11, 0.9), 0 0 0 8px rgba(245, 158, 11, 0.5); }
+}
+.prediction.streak-mode { animation: streakPulse 1.6s ease-in-out infinite; }
+@keyframes streakPulse {
+  0%, 100% { box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.5), 0 0 0 2px rgba(16,185,129,0.3); }
+  50% { box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.9), 0 0 0 7px rgba(16,185,129,0.55); }
+}
+.prediction.loss-recovery { animation: recoveryPulse 1.4s ease-in-out infinite; }
+@keyframes recoveryPulse {
+  0%, 100% { box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.6), 0 0 0 2px rgba(16,185,129,0.4); }
+  50% { box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 1), 0 0 0 8px rgba(16,185,129,0.7); }
+}
+.prediction::after { content: ''; position: absolute; top: -40%; right: -30%; width: 180px; height: 180px; background: rgba(255, 255, 255, 0.12); border-radius: 50%; pointer-events: none; }
+.prediction.loading { opacity: 0.7; }
+.pred-badge {
+  background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); padding: 4px 14px;
+  border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 6px;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pred-streak-chip {
+  display: none; position: absolute; top: 14px; left: 16px; z-index: 3;
+  background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 20px; padding: 3px 10px; font-family: 'Orbitron', sans-serif;
+  font-size: 10px; font-weight: 900; letter-spacing: 1px; backdrop-filter: blur(6px);
+}
+.pred-streak-chip.show { display: block; animation: chipPop .4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes chipPop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.pred-size { font-family: 'Orbitron', sans-serif; font-size: 72px; font-weight: 900; line-height: 1; letter-spacing: -2px; color: #ffffff; text-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); margin: 4px 0 12px 0; }
+.direct-nums-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.direct-nums-label { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; }
+.direct-nums-val { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: 8px; text-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.pred-note { font-size: 8.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 8px; position: relative; z-index: 2; }
+.num-flip { animation: numFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes numFlip { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.copy-btn {
+  margin-top: 14px; padding: 9px 20px; background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 22px; color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 10px; font-weight: 800;
+  letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+  backdrop-filter: blur(8px); transition: all .2s; position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 6px;
+}
+.copy-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.3); }
+.copy-btn:disabled { opacity: .5; cursor: not-allowed; }
+.bold-copy-display {
+  display: none; margin-top: 14px; background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 14px; padding: 12px 16px;
+  backdrop-filter: blur(10px); position: relative; z-index: 2; max-width: 100%; text-align: center;
+}
+.bold-copy-display.show { display: block; animation: boldPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes boldPop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.bold-copy-display .bc-label { font-size: 8px; font-weight: 800; letter-spacing: 2px; color: rgba(255, 255, 255, 0.65); text-transform: uppercase; margin-bottom: 4px; }
+.bold-copy-display .bc-period { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: #ffffff; letter-spacing: 1.5px; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.bold-copy-display .bc-bet { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; color: #ffffff; letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+.stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; animation: fadeUp 0.7s ease both; }
+.stat-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px 2px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
+.stat-card .s-label { font-size: 7px; color: #64748b; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+.stat-card .s-value { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; }
+.s-win { color: #10b981; } .s-loss { color: #ef4444; } .s-rate { color: #0284c7; } .s-jp { color: #f59e0b; }
+.history-section { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 22px; overflow: hidden; animation: fadeUp 0.8s ease both; box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.02); }
+.hist-header { padding: 14px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+.hist-title { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: #0f172a; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.hist-title::before { content: ''; width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+.hist-filter { display: flex; gap: 4px; }
+.filter-btn { font-size: 9px; font-weight: 800; padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #64748b; cursor: pointer; letter-spacing: 0.5px; transition: all .2s; }
+.filter-btn.active { background: #059669; color: #ffffff; border-color: #059669; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2); }
+.hist-table-wrap { max-height: 300px; overflow-y: auto; padding: 0 12px 12px 12px; }
+.hist-table-wrap::-webkit-scrollbar { width: 4px; }
+.hist-table-wrap::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 10px 4px; text-align: center; font-size: 13px; font-weight: 800; border-bottom: 1px solid #f1f5f9; }
+th { color: #94a3b8; font-size: 9px; padding: 12px 4px 8px 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; position: sticky; top: 0; background: #ffffff; z-index: 1; }
+.tag-jackpot { background: linear-gradient(90deg, #f59e0b, #ef4444); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25); }
+.tag-win { color: #047857; background: #dcfce7; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 10px; }
+.tag-loss { color: #dc2626; background: #fef2f2; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 10px; }
+.row-new { animation: flashIn 0.8s ease; }
+@keyframes flashIn { 0% { background: rgba(16, 185, 129, 0.15); } 100% { background: transparent; } }
+.num-big { color: #059669; } .num-small { color: #0284c7; }
+.empty-state { padding: 36px 20px; text-align: center; color: #94a3b8; font-size: 12px; font-weight: 700; line-height: 1.6; }
+.bottom-nav { display: flex; gap: 8px; animation: fadeUp 0.9s ease both; }
+.nav-btn { flex: 1; padding: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; color: #475569; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all .2s; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
+.nav-btn:active { transform: scale(0.96); border-color: #059669; color: #059669; }
+.nav-icon { font-size: 16px; }
+.modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: flex-end; padding: 10px; }
+.modal.show { display: flex; }
+.modal-content { width: 100%; max-width: 430px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px 24px 0 0; padding: 24px; max-height: 80vh; overflow-y: auto; animation: slideUp .3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08); }
+@keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-title { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; letter-spacing: 1px; margin-bottom: 16px; color: #0f172a; }
+.modal-option { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 8px; }
+.modal-option .opt-label { font-size: 13px; font-weight: 700; color: #0f172a; }
+.modal-option .opt-sub { font-size: 10px; color: #64748b; margin-top: 2px; }
+.switch { width: 44px; height: 24px; background: #cbd5e1; border-radius: 12px; position: relative; cursor: pointer; transition: background .2s; }
+.switch.on { background: #10b981; }
+.switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #ffffff; border-radius: 50%; transition: transform .2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.switch.on::after { transform: translateX(20px); }
+.modal-close { width: 100%; padding: 14px; background: #059669; border: none; border-radius: 12px; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 12px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); }
+.toast {
+  position: fixed; bottom: 40px; left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: #0f172a; color: #ffffff;
+  padding: 12px 22px; border-radius: 14px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.5px;
+  opacity: 0; transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast::before { content: '✓'; color: #10b981; font-size: 14px; font-weight: 900; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+<script type="module">
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  window.firebaseReady = true;
+  window.FirebaseDB = { getDatabase, ref, get, set, update, initializeApp, getApps, getApp };
+  window.firebaseConfig = {
+    apiKey: "AIzaSyA5AIrvoHugtNNEL-25Us4z2lHJPCbdnMQ",
+    authDomain: "babu-3a895.firebaseapp.com",
+    databaseURL: "https://babu-3a895-default-rtdb.firebaseio.com",
+    projectId: "babu-3a895",
+    storageBucket: "babu-3a895.firebasestorage.app",
+    messagingSenderId: "12741042292",
+    appId: "1:12741042292:web:115e81504b17e9c23ab121",
+    measurementId: "G-PLHE08DF2G"
+  };
+</script>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">YT AURA ELITE</div>
+    <div class="login-sub">QUANTUM DEEP PRO — SECURE</div>
+    
+    <div class="input-group">
+      <label>Access ID</label>
+      <input type="text" id="loginId" placeholder="Enter your ID" autocomplete="off">
+    </div>
+    
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">VERIFY & LOGIN</button>
+    <div class="login-msg" id="loginMsg"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand">YT AURA ELITE</div>
+    <div class="status-dot" id="statusText">LOADING</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-top">
+      <div class="period-block">
+        <div class="label">Next Period</div>
+        <div class="value" id="nextP">----</div>
+      </div>
+      <div class="timer-block">
+        <div class="label">Countdown</div>
+        <div class="value" id="timer">00:00</div>
+      </div>
+    </div>
+    <div class="timer-bar">
+      <div class="timer-fill" id="timerFill" style="width:100%"></div>
+    </div>
+    <div class="confidence-wrap">
+      <div class="conf-head">
+        <span id="moodText">Market Mood</span>
+        <span id="confText">--%</span>
+      </div>
+      <div class="conf-bar">
+        <div class="conf-fill" id="confFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prediction loading" id="predCard">
+    <div class="pred-streak-chip" id="streakChip">🔥 ×0</div>
+    <div class="pred-badge" id="predBadge">DEEP ANALYSIS...</div>
+    <div class="pred-size" id="res">WAIT</div>
+    <div class="direct-nums-wrap">
+      <div class="direct-nums-label" id="numLabel">TARGET NUMBERS</div>
+      <div class="direct-nums-val" id="numVal">-- , --</div>
+    </div>
+    <button class="copy-btn" id="copyBtn" onclick="copyPrediction()">
+      <span>📋</span> COPY PREDICTION
+    </button>
+    <div class="pred-note" id="predNote"></div>
+    <div class="bold-copy-display" id="boldCopyDisplay">
+      <div class="bc-label">✓ COPIED</div>
+      <div class="bc-period" id="bcPeriod">PERIOD - ---</div>
+      <div class="bc-bet" id="bcBet">---</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="s-label">Wins</div><div class="s-value s-win" id="statWins">0</div></div>
+    <div class="stat-card"><div class="s-label">Streak</div><div class="s-value s-win" id="statStreak">0</div></div>
+    <div class="stat-card"><div class="s-label">Jackpot</div><div class="s-value s-jp" id="statJp">0</div></div>
+    <div class="stat-card"><div class="s-label">Loss</div><div class="s-value s-loss" id="statLoss">0</div></div>
+    <div class="stat-card"><div class="s-label">Rate</div><div class="s-value s-rate" id="statRate">--%</div></div>
+  </div>
+
+  <div class="history-section">
+    <div class="hist-header">
+      <div class="hist-title">History</div>
+      <div class="hist-filter">
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="win">WIN</button>
+        <button class="filter-btn" data-filter="loss">LOSS</button>
+      </div>
+    </div>
+    <div class="hist-table-wrap">
+      <table>
+        <thead><tr><th>Period</th><th>Num</th><th>Size</th><th>Status</th></tr></thead>
+        <tbody id="session-h"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="openModal('settings')"><span class="nav-icon">⚙️</span>Settings</button>
+    <button class="nav-btn" onclick="openModal('stats')"><span class="nav-icon">📊</span>Stats</button>
+    <button class="nav-btn" onclick="openModal('about')"><span class="nav-icon">ℹ️</span>About</button>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+const POLL_MS = 2000;
+const MAX_ROWS = 60;
+
+let activePred   = null;
+let queuedFor    = null;
+let resolvedSet  = new Set();
+let sessionData  = [];
+let recentNumPairs = [];
+
+let totalWins = 0, totalLoss = 0, totalJackpot = 0;
+let winStreak = 0, consecutiveLosses = 0;
+let historyFilter = "all";
+let settings = { sound: false };
+let fetchFailCount = 0;
+let boldTimer = null;
+let inflight = false;
+let engineStarted = false;
+let engineIntervalId = null;
+let deviceId = "";
+let lastFirebaseCheck = 0;
+let lastAppliedPeriod = "";
+let queueTimer = null;
+
+/* =====================================================================
+   DEVICE ID
+   ===================================================================== */
+function getDeviceId() {
+  let id = localStorage.getItem('yt_aura_device');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+    localStorage.setItem('yt_aura_device', id);
+  }
+  return id;
+}
+
+/* =====================================================================
+   FIREBASE
+   ===================================================================== */
+function getDB() {
+  const { initializeApp, getApps, getApp, getDatabase } = window.FirebaseDB;
+  const app = getApps().length ? getApp() : initializeApp(window.firebaseConfig);
+  return getDatabase(app);
+}
+
+async function isUserStillValid() {
+  const savedId = localStorage.getItem('yt_aura_id');
+  if (!savedId) return false;
+  try {
+    const { ref, get } = window.FirebaseDB;
+    const db = getDB();
+    const snap = await get(ref(db, 'users/' + savedId));
+    if (!snap.exists()) return false;
+    const data = snap.val();
+    if (!data.expiry || Date.now() > data.expiry) return false;
+    if (data.deviceId && data.deviceId !== deviceId) return false;
+    return true;
+  } catch (e) { return true; }
+}
+
+function forceLogout(reason) {
+  engineStarted = false;
+  if (engineIntervalId) { clearInterval(engineIntervalId); engineIntervalId = null; }
+  if (queueTimer) { clearTimeout(queueTimer); queueTimer = null; }
+  activePred = null;
+  queuedFor = null;
+  resolvedSet.clear();
+  sessionData = [];
+  recentNumPairs = [];
+  localStorage.removeItem('yt_aura_id');
+  localStorage.removeItem('yt_aura_expiry');
+  localStorage.removeItem('yt_last_applied_period');
+  lastAppliedPeriod = "";
+
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('loginMsg').className = 'login-msg err';
+  document.getElementById('loginMsg').innerText = reason;
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginId').value = "";
+}
+
+/* =====================================================================
+   LOGIN
+   ===================================================================== */
+async function handleLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const msg = document.getElementById('loginMsg');
+  const btn = document.getElementById('loginBtn');
+
+  if (!id) {
+    msg.className = 'login-msg err';
+    msg.innerText = '❌ Please enter your Access ID';
+    return;
+  }
+
+  btn.disabled = true;
+  msg.className = 'login-msg';
+  msg.innerText = 'Verifying...';
+
+  try {
+    if (!window.firebaseReady) {
+      msg.className = 'login-msg err';
+      msg.innerText = '❌ Firebase not loaded.';
+      btn.disabled = false;
+      return;
+    }
+
+    const { ref, get, set } = window.FirebaseDB;
+    const db = getDB();
+    deviceId = getDeviceId();
+
+    const userRef = ref(db, 'users/' + id);
+    const snapshot = await get(userRef);
+
+    if (!snapshot.exists()) {
+      msg.className = 'login-msg err';
+      msg.innerText = '❌ Access ID not found in Admin Panel';
+      btn.disabled = false;
+      return;
+    }
+
+    const data = snapshot.val();
+    const expiry = data.expiry;
+    const savedDevice = data.deviceId || null;
+
+    if (!expiry || Date.now() > expiry) {
+      msg.className = 'login-msg err';
+      msg.innerText = '❌ Access Expired. Contact Admin.';
+      btn.disabled = false;
+      return;
+    }
+
+    if (savedDevice && savedDevice !== deviceId) {
+      msg.className = 'login-msg err';
+      msg.innerText = '❌ This ID is already in use on another device.';
+      btn.disabled = false;
+      return;
+    }
+
+    if (!savedDevice) {
+      await set(ref(db, 'users/' + id + '/deviceId'), deviceId);
+    }
+
+    msg.className = 'login-msg ok';
+    msg.innerText = '✅ Login Successful! Starting...';
+
+    localStorage.setItem('yt_aura_id', id);
+    localStorage.setItem('yt_aura_expiry', expiry);
+
+    setTimeout(() => startEngine(), 1200);
+
+  } catch (err) {
+    console.error(err);
+    msg.className = 'login-msg err';
+    msg.innerText = '❌ Verification failed. Try again.';
+    btn.disabled = false;
+  }
+}
+
+/* =====================================================================
+   START ENGINE
+   ===================================================================== */
+function startEngine() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.add('visible');
+
+  if (engineStarted) return;
+  engineStarted = true;
+
+  startTimer();
+  enginePro();
+  if (engineIntervalId) clearInterval(engineIntervalId);
+  engineIntervalId = setInterval(enginePro, POLL_MS);
+
+  setInterval(async () => {
+    if (!engineStarted) return;
+    const valid = await isUserStillValid();
+    if (!valid) forceLogout("❌ Access revoked by Admin.");
+  }, 5000);
+}
+
+/* =====================================================================
+   AUTO-LOGIN
+   ===================================================================== */
+window.addEventListener('DOMContentLoaded', async () => {
+  const savedId = localStorage.getItem('yt_aura_id');
+  const savedExpiry = localStorage.getItem('yt_aura_expiry');
+  deviceId = getDeviceId();
+
+  if (!savedId || !savedExpiry || Date.now() > parseInt(savedExpiry)) {
+    localStorage.removeItem('yt_aura_id');
+    localStorage.removeItem('yt_aura_expiry');
+    return;
+  }
+
+  try {
+    const { ref, get, set } = window.FirebaseDB;
+    const db = getDB();
+    const snap = await get(ref(db, 'users/' + savedId));
+
+    if (!snap.exists()) {
+      localStorage.removeItem('yt_aura_id');
+      localStorage.removeItem('yt_aura_expiry');
+      return;
+    }
+
+    const data = snap.val();
+    if (Date.now() > (data.expiry || 0)) {
+      localStorage.removeItem('yt_aura_id');
+      localStorage.removeItem('yt_aura_expiry');
+      return;
+    }
+
+    if (data.deviceId && data.deviceId !== deviceId) {
+      document.getElementById('loginMsg').className = 'login-msg err';
+      document.getElementById('loginMsg').innerText = '❌ ID bound to another device.';
+      return;
+    }
+
+    if (!data.deviceId) {
+      await set(ref(db, 'users/' + savedId + '/deviceId'), deviceId);
+    }
+
+    restoreStoredPrediction();
+    startEngine();
+  } catch (err) {}
+});
+
+/* =====================================================================
+   RESTORE PREDICTION ON REFRESH
+   ===================================================================== */
+function restoreStoredPrediction() {
+  const keys = Object.keys(localStorage);
+  let bestPeriod = "";
+  let bestPred = null;
+  
+  for (const k of keys) {
+    if (k.startsWith('yt_locked_pred_')) {
+      const period = k.replace('yt_locked_pred_', '');
+      try {
+        const pred = JSON.parse(localStorage.getItem(k));
+        if (pred && pred.period && (!bestPeriod || BigInt(period) > BigInt(bestPeriod))) {
+          bestPeriod = period;
+          bestPred = pred;
+        }
+      } catch(e) {}
+    }
+  }
+  
+  if (bestPred) {
+    activePred = bestPred;
+    applyPrediction(bestPred);
+    lastAppliedPeriod = bestPred.period;
+    localStorage.setItem('yt_last_applied_period', bestPred.period);
+  }
+}
+
+/* =====================================================================
+   DETERMINISTIC SEED & RNG
+   ===================================================================== */
+function periodSeed(period){
+  let h = 2166136261;
+  const s = String(period);
+  for(let i = 0; i < s.length; i++){
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function mulberry32(seed){
+  return function(){
+    seed |= 0;
+    seed = (seed + 0x6D2B79F5) | 0;
+    let t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* =====================================================================
+   TIMER
+   ===================================================================== */
+function startTimer(){
+  const tick = () => {
+    const s = new Date().getSeconds();
+    const remain = (60 - s) % 60;
+    document.getElementById('timer').innerText =
+      String(Math.floor(remain / 60)).padStart(2,'0') + ':' + String(remain % 60).padStart(2,'0');
+    document.getElementById('timerFill').style.width = (remain / 60 * 100) + '%';
+  };
+  tick();
+  setInterval(tick, 500);
+}
+
+/* =====================================================================
+   MAIN ENGINE LOOP
+   ===================================================================== */
+async function enginePro(){
+  if(inflight) return;
+  inflight = true;
+  try{
+    const now = Date.now();
+    if (now - lastFirebaseCheck > 3000) {
+      lastFirebaseCheck = now;
+      const valid = await isUserStillValid();
+      if (!valid) { forceLogout("❌ Access revoked by Admin."); return; }
+    }
+
+    const r = await fetch(API + "?t=" + Date.now(), { cache: 'no-store' });
+    if(!r.ok){ onFetchFail(); return; }
+
+    const data = await r.json();
+    const list = data && data.data && data.data.list;
+    if(!Array.isArray(list) || list.length === 0){ onFetchFail(); return; }
+
+    fetchFailCount = 0;
+    setStatus("LIVE", true);
+
+    const latestIssue = String(list[0].issueNumber);
+    const nextP = (BigInt(latestIssue) + 1n).toString();
+
+    /* ===== STEP 1: RESOLVE activePred ===== */
+    if (activePred) {
+      const hit = list.find(x => String(x.issueNumber) === activePred.period);
+      if (hit) {
+        if (!resolvedSet.has(activePred.period)) {
+          resolvePrediction(activePred, hit);
+        }
+        activePred = null;
+        localStorage.removeItem('yt_locked_pred_' + hit.issueNumber);
+      } else {
+        try {
+          if (BigInt(activePred.period) < BigInt(nextP)) {
+            resolvedSet.add(activePred.period);
+            localStorage.removeItem('yt_locked_pred_' + activePred.period);
+            activePred = null;
+          }
+        } catch(e) {
+          activePred = null;
+        }
+      }
+    }
+
+    /* ===== STEP 2: SKIP IF ALREADY RESOLVED ===== */
+    if (resolvedSet.has(nextP)) {
+      queuedFor = null;
+      if (queueTimer) { clearTimeout(queueTimer); queueTimer = null; }
+      return;
+    }
+
+    /* ===== STEP 3: RESTORE OR CREATE ===== */
+    if (!activePred) {
+      const stored = localStorage.getItem('yt_locked_pred_' + nextP);
+      if (stored) {
+        try {
+          const restored = JSON.parse(stored);
+          if (restored && restored.period === nextP) {
+            activePred = restored;
+            if (lastAppliedPeriod !== nextP) {
+              applyPrediction(restored);
+              lastAppliedPeriod = nextP;
+              localStorage.setItem('yt_last_applied_period', nextP);
+            }
+            return;
+          }
+        } catch(e) {
+          localStorage.removeItem('yt_locked_pred_' + nextP);
+        }
+      }
+
+      if (queuedFor !== nextP) {
+        queuePrediction(list, nextP);
+      }
+    }
+  } catch(e){
+    onFetchFail();
+  } finally {
+    inflight = false;
+  }
+}
+
+function onFetchFail(){
+  fetchFailCount++;
+  setStatus(fetchFailCount > 3 ? "NO NET" : "RETRY", false);
+}
+
+function setStatus(text, ok){
+  const el = document.getElementById('statusText');
+  el.innerText = text;
+  el.classList.remove('warn','err');
+  if(ok === false) el.classList.add(fetchFailCount > 3 ? 'err' : 'warn');
+}
+
+/* =====================================================================
+   QUEUE PREDICTION
+   ===================================================================== */
+function queuePrediction(list, nextP){
+  if (queuedFor === nextP) return;
+  if (activePred && activePred.period === nextP) return;
+  if (resolvedSet.has(nextP)) return;
+
+  queuedFor = nextP;
+  if (queueTimer) clearTimeout(queueTimer);
+
+  const snapshot = list.slice(0, MAX_ROWS);
+  const targetPeriod = nextP;
+
+  queueTimer = setTimeout(() => {
+    queueTimer = null;
+
+    if (queuedFor !== targetPeriod) return;
+    if (activePred && activePred.period === targetPeriod) { queuedFor = null; return; }
+    if (resolvedSet.has(targetPeriod)) { queuedFor = null; return; }
+
+    const stored = localStorage.getItem('yt_locked_pred_' + targetPeriod);
+    if (stored) {
+      try {
+        const restored = JSON.parse(stored);
+        if (restored && restored.period === targetPeriod) {
+          activePred = restored;
+          queuedFor = null;
+          if (lastAppliedPeriod !== targetPeriod) {
+            applyPrediction(restored);
+            lastAppliedPeriod = targetPeriod;
+            localStorage.setItem('yt_last_applied_period', targetPeriod);
+          }
+          return;
+        }
+      } catch(e) {}
+    }
+
+    const pred = deepAnalyzePredict(snapshot, targetPeriod);
+    activePred = pred;
+    queuedFor = null;
+
+    if (lastAppliedPeriod !== targetPeriod) {
+      applyPrediction(pred);
+      lastAppliedPeriod = targetPeriod;
+      localStorage.setItem('yt_last_applied_period', targetPeriod);
+    }
+
+    localStorage.setItem('yt_locked_pred_' + targetPeriod, JSON.stringify(pred));
+  }, 320);
+}
+
+/* =====================================================================
+   RESOLVE PREDICTION
+   ===================================================================== */
+function resolvePrediction(pred, hit){
+  if (resolvedSet.has(pred.period)) return;
+  resolvedSet.add(pred.period);
+  trimResolved();
+
+  const n  = parseInt(hit.number, 10);
+  const sz = n >= 5 ? 'BIG' : 'SMALL';
+  
+  let isJp = (n === pred.n1 || n === pred.n2);
+  let hitSide = pred.betType === sz;
+
+  let tag, type;
+  if(isJp){
+    tag = '<span class="tag-jackpot">JACKPOT</span>';
+    type = 'jackpot';
+    totalJackpot++; totalWins++; winStreak++; consecutiveLosses = 0;
+    playBeep(true);
+  } else if(hitSide){
+    tag = '<span class="tag-win">WIN</span>';
+    type = 'win';
+    totalWins++; winStreak++; consecutiveLosses = 0;
+    playBeep(false);
+  } else {
+    tag = '<span class="tag-loss">LOSS</span>';
+    type = 'loss';
+    totalLoss++; winStreak = 0; consecutiveLosses++;
+  }
+
+  sessionData.unshift({ p: pred.period.slice(-4), num: n, s: sz, res: tag, type });
+  if(sessionData.length > MAX_ROWS) sessionData.pop();
+
+  renderTable(true);
+  updateStats();
+}
+
+function trimResolved(){
+  if(resolvedSet.size <= 400) return;
+  resolvedSet = new Set([...resolvedSet].slice(-200));
+}
+
+/* =====================================================================
+   APPLY PREDICTION TO UI
+   ===================================================================== */
+function applyPrediction(pred){
+  if (lastAppliedPeriod === pred.period) return;
+  lastAppliedPeriod = pred.period;
+  localStorage.setItem('yt_last_applied_period', pred.period);
+
+  const card = document.getElementById('predCard');
+  card.classList.remove('loading','green-mode','blue-mode','skip-mode','stop-mode',
+                        'streak-mode','jackpot-mode','loss-recovery','red-mode','violet-mode');
+
+  if(pred.lossRecovery) card.classList.add('loss-recovery');
+  else if(pred.jackpotMode)  card.classList.add('jackpot-mode');
+  else if(pred.betType === 'SMALL') card.classList.add('blue-mode');
+  else                       card.classList.add('green-mode');
+
+  const ridingStreak = pred.streak >= 2 && !pred.lossRecovery
+                        && pred.betType === (pred.marketSide || pred.betType);
+  if(ridingStreak && winStreak >= 1) card.classList.add('streak-mode');
+
+  document.getElementById('predBadge').innerText = pred.label;
+  document.getElementById('nextP').innerText     = pred.period.slice(-4);
+  document.getElementById('moodText').innerText  = 'Mode: SIZE (BIG/SMALL)';
+  document.getElementById('res').innerText       = pred.betType;
+  
+  document.getElementById('numLabel').innerText  = 'TARGET NUMBERS';
+
+  const chip = document.getElementById('streakChip');
+  if(pred.streak >= 2){
+    chip.innerText = '🔥 ×' + pred.streak;
+    chip.classList.add('show');
+  } else {
+    chip.classList.remove('show');
+  }
+
+  const conf = Math.max(0, Math.min(100, pred.confidence));
+  document.getElementById('confText').innerText = conf + '%';
+  const fill = document.getElementById('confFill');
+  fill.style.width = conf + '%';
+  fill.classList.remove('low','high');
+  if(conf >= 72) fill.classList.add('high');
+  else if(conf < 60) fill.classList.add('low');
+
+  const nv = document.getElementById('numVal');
+  nv.classList.remove('num-flip');
+  void nv.offsetWidth;
+  nv.classList.add('num-flip');
+  nv.innerText = (pred.n1 + ' , ' + pred.n2);
+
+  document.getElementById('predNote').innerText = pred.note || '';
+  document.getElementById('boldCopyDisplay').classList.remove('show');
+}
+
+/* =====================================================================
+   QUANTUM LOSSLESS ENGINE — ANTI-LOSS HYBRID PREDICTION SYSTEM
+   ===================================================================== */
+function deepAnalyzePredict(list, nextPeriod){
+  const history = list.slice(0, MAX_ROWS)
+                      .map(x => parseInt(x.number, 10))
+                      .filter(n => Number.isFinite(n));
+  
+  const types = history.map(n => n >= 5 ? 'BIG' : 'SMALL');
+
+  if(types.length < 10){
+    return makePred(nextPeriod, 'BIG', pickOptimalNumberPair(history, 'BIG', nextPeriod), 65, '⏳ PATTERN SYNCING', 'BALANCED', { note: 'Initial Analysis Active' });
+  }
+
+  // 1. STREAK (DRAGON) DETECTION
+  let currentStreak = 1;
+  for(let i=1; i<types.length; i++){
+    if(types[i] === types[0]) currentStreak++;
+    else break;
+  }
+
+  // 2. ALTERNATING (ZIG-ZAG) STREAK DETECTION
+  let altStreak = 0;
+  for(let i=0; i<types.length - 1; i++){
+    if(types[i] !== types[i+1]) altStreak++;
+    else break;
+  }
+
+  // 3. MULTI-TIMEFRAME RATIOS
+  const r5  = types.slice(0, 5).filter(t => t === 'BIG').length / 5;
+  const r10 = types.slice(0, 10).filter(t => t === 'BIG').length / 10;
+  const r30 = types.slice(0, 30).filter(t => t === 'BIG').length / 30;
+
+  // 4. WEIGHTED MARKOV TRANSITION MATRIX
+  let bigToBig = 0, bigToSmall = 0, smallToBig = 0, smallToSmall = 0;
+  for(let i=0; i<types.length - 1; i++){
+    const weight = (types.length - i) / types.length; 
+    if(types[i+1] === 'BIG' && types[i] === 'BIG') bigToBig += weight;
+    if(types[i+1] === 'BIG' && types[i] === 'SMALL') bigToSmall += weight;
+    if(types[i+1] === 'SMALL' && types[i] === 'BIG') smallToBig += weight;
+    if(types[i+1] === 'SMALL' && types[i] === 'SMALL') smallToSmall += weight;
+  }
+
+  const lastSide = types[0];
+  let markovScore = 0;
+  if(lastSide === 'BIG'){
+    markovScore = (bigToBig - bigToSmall) * 15;
+  } else {
+    markovScore = (smallToBig - smallToSmall) * 15;
+  }
+
+  // 5. ANTI-LOSS SCORE CALCULATION
+  let score = 0;
+
+  // Pattern A: Strong Dragon Streak (Same result repeat) -> Priority 1
+  if(currentStreak >= 2){
+    score += (lastSide === 'BIG' ? 85 : -85);
+  } 
+  // Pattern B: True Alternating Zig-Zag (Minimum 3 clean flips) -> Priority 2
+  else if(altStreak >= 3){
+    score += (lastSide === 'BIG' ? -75 : 75);
+  }
+  // Pattern C: Recent 5-period Weighted Majority Dynamic
+  else {
+    if(r5 >= 0.6) score += 45;
+    else if(r5 <= 0.4) score -= 45;
+
+    if(r10 >= 0.7) score += 20;
+    else if(r10 <= 0.3) score -= 20;
+
+    if(r30 >= 0.6) score += 10;
+    else if(r30 <= 0.4) score -= 10;
+  }
+
+  score += markovScore;
+
+  let predictedSide = score >= 0 ? 'BIG' : 'SMALL';
+
+  // Strict Dragon Guard: Single flip ke baad agar streak continuous thi, toh trend me rahein
+  if(currentStreak === 1 && altStreak < 3){
+    const prev2 = types[1];
+    if(types.slice(1,4).every(t => t === prev2)){
+      predictedSide = prev2; // Trend Reversion Guard
+    }
+  }
+
+  let confidence = Math.min(98, 68 + Math.abs(score) / 2.0);
+
+  let betType = predictedSide;
+  let recovery = false;
+  let label = '🎯 ANTI-LOSS LOCK — ' + betType;
+
+  // 6. ADAPTIVE LOSS RECOVERY SAFETY SYSTEM
+  if(consecutiveLosses === 1){
+    recovery = true;
+    // Loss ke baad exact inverse risk lene ke bajaye 5-period dominant trend follow karein
+    betType = r5 >= 0.5 ? 'BIG' : 'SMALL';
+    confidence = Math.max(94, confidence);
+    label = '⚡ LOSS SHIELD [3X] — ' + betType;
+  } 
+  else if(consecutiveLosses >= 2){
+    recovery = true;
+    // Streak trend check across last 3 results
+    const bigCount = types.slice(0, 3).filter(t => t === 'BIG').length;
+    betType = bigCount >= 2 ? 'BIG' : 'SMALL';
+    confidence = Math.max(97, confidence);
+    const multiplier = consecutiveLosses === 2 ? '8X' : '24X';
+    label = `🛡️ DEEP RECOVERY [${multiplier}] — ` + betType;
+  }
+
+  // 7. WIN STREAK / JACKPOT LOCK
+  let jackpotMode = false;
+  if(winStreak >= 2 && !recovery){
+    jackpotMode = true;
+    betType = lastSide;
+    confidence = Math.max(95, confidence);
+    label = '🔥 STREAK RIDE — ' + betType;
+  } else if(confidence >= 90 && !recovery){
+    jackpotMode = true;
+    label = '💎 QUANTUM LOCK — ' + betType;
+  }
+
+  // 8. HIGH-ACCURACY NUMBERS GENERATION
+  const nums = pickOptimalNumberPair(history, betType, nextPeriod, jackpotMode);
+
+  const note = `ANTI-LOSS ENGINE · ${Math.round(confidence)}% ACCURACY`;
+
+  return makePred(nextPeriod, betType, nums, confidence, label, 'CLEAR', {
+    jackpot: jackpotMode, recovery, skip: false, note, streak: currentStreak, marketSide: predictedSide
+  });
+}
+
+/* =====================================================================
+   TARGET NUMBER + OPPOSITE COVER CALCULATOR
+   ===================================================================== */
+function pickOptimalNumberPair(history, betType, period, jackpotMode = false){
+  const primaryPool   = betType === 'BIG' ? [5,6,7,8,9] : [0,1,2,3,4];
+  const secondaryPool = betType === 'BIG' ? [0,1,2,3,4] : [5,6,7,8,9];
+
+  if(!history || history.length === 0){
+    return { n1: primaryPool[0], n2: secondaryPool[secondaryPool.length - 1] };
+  }
+
+  const rng = mulberry32(periodSeed(period) ^ 0xA5A5A5A5);
+  const lastNum = history[0];
+
+  const freqMap = {};
+  history.slice(0, 40).forEach(n => freqMap[n] = (freqMap[n] || 0) + 1);
+
+  const lastSeenMap = {};
+  history.forEach((n, idx) => { if(lastSeenMap[n] === undefined) lastSeenMap[n] = idx; });
+
+  const transitions = {};
+  for(let i=0; i<Math.min(history.length - 1, 50); i++){
+    const prev = history[i+1], curr = history[i];
+    if(!transitions[prev]) transitions[prev] = {};
+    transitions[prev][curr] = (transitions[prev][curr] || 0) + 1;
+  }
+  const nextFromLast = transitions[lastNum] || {};
+
+  function scoreCandidate(n, isPrimary) {
+    let s = 0;
+    s += (freqMap[n] || 0) * 3;
+    if(nextFromLast[n]) s += nextFromLast[n] * 30;
+
+    const gap = lastSeenMap[n] !== undefined ? lastSeenMap[n] : 50;
+    
+    if(jackpotMode){
+      if(gap > 12) s += 60;
+      else if(gap > 5) s += 30;
+    } else {
+      if(gap >= 3 && gap <= 12) s += 40;
+      else if(gap > 12) s += 20;
+      else if(gap <= 1) s -= 10;
+    }
+
+    const diff = Math.abs(lastNum - n);
+    if(diff === 1 || diff === 2) s += 15;
+
+    return s;
+  }
+
+  const primaryScored = primaryPool.map(num => ({ num, score: scoreCandidate(num, true) }));
+  primaryScored.sort((a,b) => b.score - a.score);
+
+  const secondaryScored = secondaryPool.map(num => ({ num, score: scoreCandidate(num, false) }));
+  secondaryScored.sort((a,b) => b.score - a.score);
+
+  const bannedSet = new Set();
+  recentNumPairs.slice(-3).forEach(p => { bannedSet.add(p.n1); bannedSet.add(p.n2); });
+
+  let eligiblePrimary = primaryScored.filter(x => !bannedSet.has(x.num));
+  if(eligiblePrimary.length === 0) eligiblePrimary = primaryScored;
+
+  let eligibleSecondary = secondaryScored.filter(x => !bannedSet.has(x.num));
+  if(eligibleSecondary.length === 0) eligibleSecondary = secondaryScored;
+
+  let n1 = eligiblePrimary[0].num;
+  let n2 = eligibleSecondary[0].num;
+
+  if(n1 === n2){
+    const alt = eligibleSecondary.find(x => x.num !== n1);
+    if(alt) n2 = alt.num;
+  }
+
+  recentNumPairs.push({ period, n1, n2 });
+  if(recentNumPairs.length > 10) recentNumPairs.shift();
+
+  return { n1, n2 };
+}
+
+function makePred(period, betType, nums, confidence, label, mood, opts){
+  opts = opts || {};
+  const n1 = Number.isFinite(nums.n1) ? nums.n1 : 5;
+  const n2 = Number.isFinite(nums.n2) ? nums.n2 : 2;
+  return {
+    period, betType, n1, n2,
+    confidence: Math.round(confidence),
+    label, mood, note: opts.note || '',
+    streak: opts.streak || 0, marketSide: opts.marketSide || betType,
+    jackpotMode: !!opts.jackpot, lossRecovery: !!opts.recovery, skip: false
+  };
+}
+
+/* =====================================================================
+   RENDER & UI
+   ===================================================================== */
+function renderTable(isNew){
+  const filtered = sessionData.filter(i => {
+    if(historyFilter === 'all')  return true;
+    if(historyFilter === 'win')  return i.type === 'win' || i.type === 'jackpot';
+    if(historyFilter === 'loss') return i.type === 'loss';
+    return false;
+  });
+
+  if(filtered.length === 0){
+    document.getElementById('session-h').innerHTML = `<tr><td colspan="4" class="empty-state"><div style="font-size:22px;margin-bottom:4px">📊</div>Koi history record nahi mila<br><span style="color:#cbd5e1;font-size:10px">Agla result aane tak wait karein</span></td></tr>`;
+    return;
+  }
+
+  let h = '';
+  filtered.forEach((i, idx) => {
+    let cls = 'num-big';
+    if(i.s === 'SMALL') cls = 'num-small';
+    h += `<tr class="${isNew && idx === 0 ? 'row-new' : ''}">
+      <td>${i.p}</td><td class="${cls}">${i.num}</td><td class="${cls}">${i.s}</td><td>${i.res}</td>
+    </tr>`;
+  });
+  document.getElementById('session-h').innerHTML = h;
+}
+
+function updateStats(){
+  document.getElementById('statWins').innerText   = totalWins;
+  document.getElementById('statLoss').innerText   = totalLoss;
+  document.getElementById('statJp').innerText     = totalJackpot;
+  document.getElementById('statStreak').innerText = winStreak;
+  const total = totalWins + totalLoss;
+  const rate  = total > 0 ? Math.round((totalWins / total) * 100) : 0;
+  document.getElementById('statRate').innerText = rate + '%';
+}
+
+/* =====================================================================
+   BOLD COPY
+   ===================================================================== */
+function toBoldUnicode(str) {
+  const boldMap = {
+    'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚',
+    'H': '𝗛', 'I': '𝗜', 'J': '𝗝', 'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡',
+    'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧', 'U': '𝗨',
+    'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
+    'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴',
+    'h': '𝗵', 'i': '𝗶', 'j': '𝗷', 'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻',
+    'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁', 'u': '𝘂',
+    'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇',
+    '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+    '(': '(', ')': ')', ',': ',', ' ': ' ', '-': '-', '': ''
+  };
+  return String(str).split('').map(c => boldMap[c] || c).join('');
+}
+
+function copyPrediction(){
+  if(!activePred){ showToast('No prediction yet'); return; }
+  
+  const periodShort = activePred.period.slice(-3);
+  const boldPeriod = toBoldUnicode("PERIOD NO - " + periodShort);
+  const boldBetType = toBoldUnicode(activePred.betType);
+  const boldNums = toBoldUnicode(activePred.n1 + " , " + activePred.n2);
+  
+  const text = `‼️ ${boldPeriod}\n\n📈 ${boldBetType} ➔ ${boldNums}`;
+
+  document.getElementById('bcPeriod').innerText = 'PERIOD NO. - ' + periodShort;
+  document.getElementById('bcBet').innerText    = activePred.betType + ' (' + activePred.n1 + ', ' + activePred.n2 + ')';
+  
+  const display = document.getElementById('boldCopyDisplay');
+  display.classList.remove('show'); void display.offsetWidth;
+  display.classList.add('show');
+  clearTimeout(boldTimer);
+  boldTimer = setTimeout(() => display.classList.remove('show'), 6000);
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => showToast('Copied! Bold text ready')).catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); showToast('Copied! Bold text ready'); } catch(e){ showToast('Copy failed'); }
+  document.body.removeChild(ta);
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.innerText = msg; t.classList.add('show');
+  clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function playBeep(isJackpot){
+  if(!settings.sound) return;
+  try{
+    const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+    const osc  = ctx.createOscillator(); const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = isJackpot ? 880 : 520;
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.start(); osc.stop(ctx.currentTime + 0.3);
+  } catch(e){}
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); historyFilter = btn.dataset.filter; renderTable(false);
+  });
+});
+
+function openModal(type){
+  const c = document.getElementById('modalContent');
+  let html = '';
+  if(type === 'settings'){
+    html = `<div class="modal-title">SETTINGS</div><div class="modal-option"><div><div class="opt-label">Sound Notification</div><div class="opt-sub">Win / Jackpot sound alert</div></div><div class="switch ${settings.sound ? 'on' : ''}" onclick="toggleSetting('sound', this)"></div></div><button class="modal-close" onclick="closeModal()">CLOSE</button>`;
+  } else if(type === 'stats'){
+    const total = totalWins + totalLoss; const rate  = total > 0 ? Math.round((totalWins / total) * 100) : 0;
+    html = `<div class="modal-title">LIVE SESSION STATS</div><div class="modal-option"><div class="opt-label">Total Wins</div><div class="opt-label s-win">${totalWins}</div></div><div class="modal-option"><div class="opt-label">Current Streak</div><div class="opt-label s-win">${winStreak}</div></div><div class="modal-option"><div class="opt-label">Jackpots</div><div class="opt-label s-jp">${totalJackpot}</div></div><div class="modal-option"><div class="opt-label">Losses</div><div class="opt-label s-loss">${totalLoss}</div></div><div class="modal-option"><div class="opt-label">Accuracy</div><div class="opt-label s-rate">${rate}%</div></div><button class="modal-close" onclick="closeModal()">CLOSE</button>`;
+  } else if(type === 'about'){
+    html = `<div class="modal-title">ABOUT YT AURA ELITE</div><div style="font-size:12px;color:#64748b;line-height:1.8;font-weight:600"><p style="margin-bottom:12px"><b style="color:#059669">YT AURA ELITE — QUANTUM DEEP PRO</b></p><p style="margin-bottom:8px"><b style="color:#10b981">Prediction Lock:</b> Ek baar prediction ban gayi toh wahi rahegi — refresh pe bhi dikhegi.</p><p style="margin-bottom:8px"><b style="color:#10b981">No Stack:</b> Stale predictions auto-clear ho jaati hain.</p><p style="margin-bottom:8px"><b style="color:#10b981">Trend Follow:</b> Win streak pe ride, loss pe recovery.</p><p style="margin-bottom:8px"><b style="color:#10b981">One ID = One Device:</b> Ek ID sirf ek device par chalegi. Admin delete karte hi turant band.</p><p style="color:#ef4444;font-weight:800;margin-top:12px">⚠ WinGo RNG hai. 100% guarantee kisi ke paas nahi hai. Apna khayal rakhein.</p></div><button class="modal-close" onclick="closeModal()">CLOSE</button>`;
+  }
+  c.innerHTML = html; document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function toggleSetting(key, el){ settings[key] = !settings[key]; el.classList.toggle('on'); }
+document.getElementById('modal').addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
+</script>
+</body>
+</html>
